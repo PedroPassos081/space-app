@@ -1,9 +1,9 @@
-import styled from "styled-components"
+import { styled } from "styled-components"
 import EstilosGlobais from "./componentes/EstilosGlobais"
 import Cabecalho from "./componentes/Cabecalho"
 import BarraLateral from "./componentes/BarraLateral"
 import Banner from "./componentes/Banner"
-import bannerBackground from "./assets/banner.png"
+import bannerBackground from './assets/banner.png'
 import Galeria from "./componentes/Galeria"
 
 import fotos from './fotos.json'
@@ -15,15 +15,18 @@ const FundoGradiente = styled.div`
   width: 100%;
   min-height: 100vh;
 `
+
 const AppContainer = styled.div`
   width: 1440px;
   margin: 0 auto;
-  max-width:100%;
+  max-width: 100%;
 `
-const ContainerMain = styled.main`
-   display: flex;
-    gap: 26px;
+
+const MainContainer = styled.main`
+  display: flex;
+  gap: 24px;
 `
+
 const ConteudoGaleria = styled.section`
   display: flex;
   flex-direction: column;
@@ -32,26 +35,37 @@ const ConteudoGaleria = styled.section`
 
 const App = () => {
   const [fotosDaGaleria, setFotosDaGaleria] = useState(fotos)
+  const [fotoSelecionada, setFotoSelecionada] = useState(null)
+
+  const aoAlternarFavorito = (foto) => {
+    setFotosDaGaleria(foto.map())
+  }
 
   return (
     <FundoGradiente>
       <EstilosGlobais />
       <AppContainer>
         <Cabecalho />
-        <ContainerMain >
+        <MainContainer>
           <BarraLateral />
           <ConteudoGaleria>
             <Banner
               texto="A galeria mais completa de fotos do espaço!"
               backgroundImage={bannerBackground}
             />
-            <Galeria fotos={fotosDaGaleria} />
+            <Galeria
+              aoFotoSelecionada={foto => setFotoSelecionada(foto)}
+              aoAlternarFavorito={aoAlternarFavorito}
+              fotos={fotosDaGaleria}
+            />
           </ConteudoGaleria>
-        </ContainerMain>
-        <ModalZoom />
+        </MainContainer>
       </AppContainer>
+      <ModalZoom
+        foto={fotoSelecionada}
+        aoFechar={() => setFotoSelecionada(null)}
+      />
     </FundoGradiente>
-
   )
 }
 
